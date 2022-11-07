@@ -1,0 +1,61 @@
+name: Booga-Game
+version: 1.0
+author: SantaScape (trmayhem@outlook.com)
+main: io.booga.plugin.BoogaGame
+softdepend: [Vault]
+depend: [Booga]
+
+api-version: 1.19
+
+commands:
+  rules:
+    description: A list of all server rules.
+    usage: /<command>
+  booga:
+    description: A listing of Booga's commands.
+    usage: /<command>
+    permission: booga.help
+  booga help:
+    description: A listing of Booga's commands.
+    usage: /<command> help
+    permission: booga.help
+  booga guide:
+    description: Get a new guide book.
+    usage: /<command> guid
+    permission: booga.guide
+  booga status:
+    description: Check war / grace / peace time status.
+    usage: /<command> status
+    permission: booga.status
+  booga offer:
+    description: Offer certain resources to increase peace time.
+    usage: /<command> offer [item name (use '-' instead of spaces)] [amount]
+    permission: booga.offer
+  booga declare:
+    description: Make a plea for grace or war.
+    usage: /<command> declare [war/grace]
+    permission: booga.declare
+  booga friend:
+    description: Adds someone to your list of friends.
+    usage: /<command> declare [war/grace]
+    permission: booga.friends
+  booga unfriend:
+    description: Removes someone from your list of friends.
+    usage: /<command> declare [war/grace]
+    permission: booga.friends
+  booga claim:
+    description: Claim your current chunk.
+    usage: /<command> claim
+    permission: booga.claim
+  booga unclaim:
+    description: Unclaim your current chunk.
+    usage: /<command> unclaim
+    permission: booga.claim
+  booga unclaim all:
+    description: Unclaim all of your chunks.
+    usage: /<command> unclaim all
+    permission: booga.claim
+  booga explosives:
+    description: Toggle explosives in your chunk.
+    usage: /<command> explosives [on/off]
+    permission: booga.toggle-explosives

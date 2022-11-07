@@ -1,0 +1,5 @@
+tribes:
+  enabled: true
+  max-players: 6
+  friendly-fire: false
+  name-valid-characters: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_'

@@ -1,0 +1,29 @@
+game-settings:
+  current-mode: WAR
+  peace-time: 0
+  war-time: 0
+economy:
+  vault:
+    enabled: true
+    mob-kill-deposit: 25.0
+claim:
+  enabled: true
+  claim-cost: 1000.0
+  max-claims: 9
+contributions:
+  diamond: 60000
+  emerald: 120000
+  wheat: 200
+  gold-ingot: 10000
+  iron-ingot: 5000
+  redstone: 200
+  carrot: 200
+  potato: 200
+timers:
+  war-period: 1800000
+  grace-period: 3600000
+tribes:
+  enabled: true
+  max-players: 6
+  friendly-fire: false
+  name-valid-characters: abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_

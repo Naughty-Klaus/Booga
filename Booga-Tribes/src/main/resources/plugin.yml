@@ -1,0 +1,20 @@
+name: Booga-Tribes
+version: 1.0
+author: SantaScape (trmayhem@outlook.com)
+main: io.booga.plugin.BoogaTribes
+depend: [Booga, Booga-Claim]
+
+api-version: 1.19
+
+commands:
+  booga tribe:
+    description: The root of all tribe subcommands.
+    usage: /<command> tribe [subcommand] [args]
+    permission: booga.tribes
+permissions:
+  booga.tribes:
+    description: The root of all tribe subcommands.
+    default: true
+  booga.tribes.config:
+    description: Allows you to save/reload the Booga tribes config.
+    default: false

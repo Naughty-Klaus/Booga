@@ -1,0 +1,96 @@
+name: Booga
+version: 1.0
+author: SantaScape (trmayhem@outlook.com)
+main: io.booga.plugin.BoogaCore
+softdepend: [Vault]
+
+api-version: 1.19
+
+commands:
+  rules:
+    description: A list of all server rules.
+    usage: /<command>
+  booga:
+    description: A listing of Booga's commands.
+    usage: /<command>
+    permission: booga.help
+  booga help:
+    description: A listing of Booga's commands.
+    usage: /<command> help
+    permission: booga.help
+  booga guide:
+    description: Get a new guide book.
+    usage: /<command> guid
+    permission: booga.guide
+  booga status:
+    description: Check war / grace / peace time status.
+    usage: /<command> status
+    permission: booga.status
+  booga offer:
+    description: Offer certain resources to increase peace time.
+    usage: /<command> offer [item name (use '-' instead of spaces)] [amount]
+    permission: booga.offer
+  booga declare:
+    description: Make a plea for grace or war.
+    usage: /<command> declare [war/grace]
+    permission: booga.declare
+  booga friend:
+    description: Adds someone to your list of friends.
+    usage: /<command> declare [war/grace]
+    permission: booga.friends
+  booga unfriend:
+    description: Removes someone from your list of friends.
+    usage: /<command> declare [war/grace]
+    permission: booga.friends
+  booga claim:
+    description: Claim your current chunk.
+    usage: /<command> claim
+    permission: booga.claim
+  booga unclaim:
+    description: Unclaim your current chunk.
+    usage: /<command> unclaim
+    permission: booga.claim
+  booga unclaim all:
+    description: Unclaim all of your chunks.
+    usage: /<command> unclaim all
+    permission: booga.claim
+  booga explosives:
+    description: Toggle explosives in your chunk.
+    usage: /<command> explosives [on/off]
+    permission: booga.toggle-explosives
+permissions:
+  booga.user.*:
+    description: Gives access to Booga user commands.
+    children:
+      booga.help: true
+      booga.claim: true
+      booga.status: true
+      booga.offer: true
+      booga.explosives: true
+  booga.help:
+    description: Allows you to see list of Booga commands.
+    default: true
+  booga.config:
+    description: Allows you to see list of Booga commands.
+    default: false
+  booga.guide:
+    description: Allows you to get another guide book.
+    default: true
+  booga.claim:
+    description: Allows you claim / unclaim chunks.
+    default: true
+  booga.status:
+    description: Allows you to see mode status.
+    default: true
+  booga.offer:
+    description: Allows you offer diamonds.
+    default: true
+  booga.declare:
+    description: Allows plea for grace or war period.
+    default: true
+  booga.explosives:
+    description: Allows you to toggle explosives in a chunk.
+    default: true
+  booga.operator:
+    description: Allows you to save/reload the Booga config.
+    default: false
