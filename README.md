@@ -1,4 +1,4 @@
-## [Booga](https://github.com/RaunchySanta/Booga/) - Developed by [RaunchySanta](https://github.com/RaunchySanta/)
+## [Booga](https://github.com/RaunchySanta/Booga/) - Developed by [Raunchy Santa](https://github.com/RaunchySanta/)
 
 ___
 
