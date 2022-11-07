@@ -1,4 +1,4 @@
-## [Booga](https://github.com/Syprene/Booga/) - Developed by [Syprene](https://github.com/Syprene/)
+## [Booga](https://github.com/RaunchySanta/Booga/) - Developed by [RaunchySanta](https://github.com/RaunchySanta/)
 
 ___
 
