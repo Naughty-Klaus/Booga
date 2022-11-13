@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.entity.Creeper;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
@@ -234,6 +235,58 @@ public class PluginEventListener implements Listener {
                     "use the command '/booga help'."
             }
     };
+
+    @EventHandler
+    public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent e) {
+        if(e.getHand().equals(EquipmentSlot.OFF_HAND)) {
+            if (e.getPlayer() != null) {
+                switch (e.getRightClicked().getType()) {
+                    case COW:
+                        if(!BoogaCore.getPlugin().getDataConfig().contains("mob-extras.cow.enabled"))
+                            BoogaCore.getPlugin().getDataConfig().set("mob-extras.cow.enabled", false);
+                        else if(BoogaCore.getPlugin().getDataConfig().getBoolean("mob-extras.cow.enabled")) {
+                            for (PotionEffect ef : e.getPlayer().getActivePotionEffects()) {
+                                e.getPlayer().removePotionEffect(ef.getType());
+                            }
+                            e.getPlayer().getActivePotionEffects().clear();
+                            e.getPlayer().sendMessage("You drink from the cow's teet and embrace a mother's love.");
+                        }
+                        //e.setCancelled(true);
+                        break;
+                    case MUSHROOM_COW:
+                        if(!BoogaCore.getPlugin().getDataConfig().contains("mob-extras.mooshroom.enabled"))
+                            BoogaCore.getPlugin().getDataConfig().set("mob-extras.mooshroom.enabled", false);
+                        else if(BoogaCore.getPlugin().getDataConfig().getBoolean("mob-extras.mooshroom.enabled")) {
+                            e.getPlayer().setFoodLevel(20);
+                            e.getPlayer().setSaturation(20);
+                            e.getPlayer().sendMessage("You drink from the cow's teet; it's warm and chunky.");
+                        }
+                        //e.setCancelled(true);
+                        break;
+                    case CREEPER:
+                        //e.getPlayer().getWorld().
+                        if(!BoogaCore.getPlugin().getDataConfig().contains("mob-extras.creeper.enabled"))
+                            BoogaCore.getPlugin().getDataConfig().set("mob-extras.creeper.enabled", false);
+                        else if(BoogaCore.getPlugin().getDataConfig().getBoolean("mob-extras.creeper.enabled")) {
+                            Creeper creeper = (Creeper) e.getRightClicked();
+                            float radius = creeper.getExplosionRadius();
+
+                            if(!BoogaCore.getPlugin().getDataConfig().contains("mob-extras.creeper.custom-explosion")) {
+                                BoogaCore.getPlugin().getDataConfig().set("mob-extras.creeper.custom-explosion", false);
+                                BoogaCore.getPlugin().getDataConfig().set("mob-extras.creeper.custom-radius", 3F);
+                            } else if(BoogaCore.getPlugin().getDataConfig().getBoolean("mob-extras.creeper.custom-explosion")) {
+                                radius = (float) BoogaCore.getPlugin().getDataConfig().getDouble("mob-extras.creeper.custom-radius");
+                            }
+
+                            e.getPlayer().getWorld().createExplosion(e.getRightClicked().getLocation(), radius);
+                            e.getPlayer().sendMessage("You drink from the creeper's junk and it explodes with happiness!");
+                        }
+                        //e.setCancelled(true);
+                        break;
+                }
+            }
+        }
+    }
 
     public static ItemStack getNewcomerBook(Player p) {
         List<String> pages = new ArrayList<String>();

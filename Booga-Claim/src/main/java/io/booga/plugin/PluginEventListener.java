@@ -28,42 +28,6 @@ import java.util.*;
 public class PluginEventListener implements Listener {
 
     @EventHandler
-    public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent e) {
-        if(e.getHand().equals(EquipmentSlot.OFF_HAND)) {
-            if (e.getPlayer() != null) {
-                switch (e.getRightClicked().getType()) {
-                    case COW:
-                        for(PotionEffect ef : e.getPlayer().getActivePotionEffects()) {
-                            e.getPlayer().removePotionEffect(ef.getType());
-                        }
-                        e.getPlayer().getActivePotionEffects().clear();
-                        e.getPlayer().sendMessage("You drink from the cow's teet and embrace a mother's love.");
-                        //e.setCancelled(true);
-                        break;
-                    case MUSHROOM_COW:
-                        e.getPlayer().setFoodLevel(20);
-                        e.getPlayer().setSaturation(20);
-                        e.getPlayer().sendMessage("You drink from the cow's teet; it's warm and chunky.");
-                        //e.setCancelled(true);
-                        break;
-                    case CREEPER:
-                        //e.getPlayer().getWorld().
-
-                        Creeper creeper = (Creeper) e.getRightClicked();
-                        creeper.setPowered(true);
-
-                        creeper.explode();
-
-                        e.getPlayer().getWorld().createExplosion(e.getRightClicked().getLocation(), 16F);
-                        e.getPlayer().sendMessage("You drink from the creeper's junk and it explodes with happiness!");
-                        //e.setCancelled(true);
-                        break;
-                }
-            }
-        }
-    }
-
-    @EventHandler
     public void onPlayerInteractEvent(PlayerInteractEvent e) {
         if (e.getPlayer() != null) {
             if (BoogaCore.getPlugin().getConfig().getString("game-settings.current-mode").equalsIgnoreCase("PEACE")) {
