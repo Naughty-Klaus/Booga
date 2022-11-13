@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
@@ -17,6 +18,7 @@ import org.bukkit.event.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.potion.PotionEffect;
@@ -176,6 +178,17 @@ public class PluginEventListener implements Listener {
         Player killer = e.getEntity().getKiller();
 
         if(victim != null) {
+
+            Block block = e.getEntity().getLocation().getBlock();
+            block.setType(Material.CHEST);
+            Chest chest = (Chest) block.getState();
+            Inventory inv = chest.getInventory();
+
+            inv.setContents((ItemStack[]) e.getDrops().toArray());
+            e.getEntity().sendMessage("You died at: " + e.getEntity().getLocation().toString());
+
+            e.getDrops().clear();
+
             if (killer != null) {
                 long playerKills = BoogaCore.getPlugin().getDataConfig().getLong("players." + killer.getUniqueId() + ".player-kills");
                 playerKills++;
