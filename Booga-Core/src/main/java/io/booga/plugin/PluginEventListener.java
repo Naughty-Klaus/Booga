@@ -27,6 +27,90 @@ import java.util.*;
 
 public class PluginEventListener implements Listener {
 
+    /**
+     * Gets the closest block which is of the specified type.
+     * @param origin The origin block.
+     * @param type The type.
+     * @return The block which is closest.
+     */
+    public Block getClosestBlockOfType(Block origin, Material type) {
+        int currentRadius = 1;
+        int maxRadius = -1;
+        Block result = null;
+
+        while (true) {
+            // Check if the loop should end
+            if (maxRadius != -1 && currentRadius > maxRadius) {
+                break;
+            }
+
+            List < Block > currentCube = getCubeAroundOrigin(origin, currentRadius);
+
+            // Loop the cube
+            for (int i = 0; i < currentCube.size(); i++) {
+                Block currentBlock = currentCube.get(i);
+
+                // Check if the block matches, and if it's closer than the current result
+                if (currentBlock.getType() == type && (result == null || origin.getLocation().distance(currentBlock.getLocation()) < origin.getLocation().distance(result.getLocation()))) {
+                    // If it is, set it as the result and lock the maximum radius
+                    result = currentBlock;
+                    maxRadius = (int) origin.getLocation().distance(result.getLocation());
+                }
+            }
+
+            // Increase radius
+            currentRadius++;
+        }
+
+        return result;
+    }
+
+    /**
+     * Gets the blocks of a cube around an origin point with the given radius.
+     * @param origin The origin block.
+     * @param radius The radius around the origin block.
+     * @return A list of blocks that are the cube.
+     */
+    public List < Block > getCubeAroundOrigin(Block origin, int radius) {
+        List < Block > cube = new ArrayList < Block > ();
+
+        // Get west and east sides of cube
+        for (int y = origin.getY() - radius; y <= origin.getY() + radius; y++) {
+            for (int z = origin.getZ() - radius; z <= origin.getZ() + radius; z++) {
+                // West side
+                cube.add(origin.getWorld().getBlockAt(origin.getX() - radius, y, z));
+
+                // East side
+                cube.add(origin.getWorld().getBlockAt(origin.getX() + radius, y, z));
+            }
+        }
+
+        // Get north and south sides of cube
+        for (int x = origin.getX() - radius + 1; x <= origin.getX() + radius - 1; x++) { // Remove 1 from both sides, to exclude west and east sides
+            for (int y = origin.getY() - radius; y <= origin.getY() + radius; y++) {
+                // North side
+                cube.add(origin.getWorld().getBlockAt(x, y, origin.getZ() - radius));
+
+                // South side
+                cube.add(origin.getWorld().getBlockAt(x, y, origin.getZ() + radius));
+            }
+        }
+
+        // Get top and bottom sides of cube
+        for (int x = origin.getX() - radius + 1; x <= origin.getX() + radius - 1; x++) { // Remove 1 from both sides, to exclude west and east sides
+            for (int z = origin.getZ() - radius + 1; z <= origin.getZ() + radius - 1; z++) { // Remove 1 from both sides, to exclude north and south sides
+                // Top side
+                cube.add(origin.getWorld().getBlockAt(x, origin.getY() + radius, z));
+
+                // Bottom side
+                cube.add(origin.getWorld().getBlockAt(x, origin.getY() - radius, z));
+            }
+        }
+
+        return cube;
+    }
+
+
     public static String[][] newcomerBookPagesTemplate = new String[][]{
             new String[]{
                     "Hello, <player_name>!",
@@ -172,6 +256,10 @@ public class PluginEventListener implements Listener {
         return writtenBook;
     }
 
+    public static String getLocationSimplified(Location l) {
+        return "( " + l.getBlock().getX() + ", " + l.getBlock().getY() + ", " + l.getBlock().getZ() + " )";
+    }
+
     @EventHandler
     public void onPlayerDeathEvent(PlayerDeathEvent e) {
         Player victim = e.getEntity();
@@ -179,15 +267,26 @@ public class PluginEventListener implements Listener {
 
         if(victim != null) {
 
-            Block block = e.getEntity().getLocation().getBlock();
+            Block block = getClosestBlockOfType(e.getEntity().getLocation().getBlock(), Material.AIR);
             block.setType(Material.CHEST);
-            Chest chest = (Chest) block.getState();
-            Inventory inv = chest.getInventory();
 
-            inv.setContents((ItemStack[]) e.getDrops().toArray());
-            e.getEntity().sendMessage("You died at: " + e.getEntity().getLocation().toString());
+            List<ItemStack> drops = e.getDrops();
+            ListIterator<ItemStack> litr = drops.listIterator();
 
-            e.getDrops().clear();
+            while(litr.hasNext()){
+                ItemStack stack = litr.next();
+                ((Chest) block.getState()).getBlockInventory().addItem(stack);
+                litr.remove();
+            }
+
+            String world = e.getEntity().getWorld().getName().replaceAll("world", "overworld");
+
+            if(world.contains("nether"))
+                world = "nether";
+            else if(world.contains("end"))
+                world = "end";
+
+            e.getEntity().sendMessage("You died in the " + world + " at: " + getLocationSimplified(e.getEntity().getLocation()) + ".");
 
             if (killer != null) {
                 long playerKills = BoogaCore.getPlugin().getDataConfig().getLong("players." + killer.getUniqueId() + ".player-kills");
